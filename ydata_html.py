@@ -1,9 +1,9 @@
 import pandas as pd
-import ydata_profiling
+from ydata_profiling import ProfileReport
 
 df = pd.read_csv('./IMDB Dataset.csv/IMDB Dataset.csv')
 
-profile = ydata_profiling.ProfileReport(
+profile = ProfileReport(
     df,
     title="Rapport d'analyse du dataset IMDB",
     explorative=True,
