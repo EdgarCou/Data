@@ -12,8 +12,8 @@ import seaborn as sns
 import os
 from multiprocessing import Pool, cpu_count
 
-if not os.path.exists('classification_results'):
-    os.makedirs('classification_results')
+if not os.path.exists('src/classification_results'):
+    os.makedirs('src/classification_results')
 
 nltk.download('punkt', quiet=True)
 nltk.download('stopwords', quiet=True)
@@ -30,7 +30,7 @@ def process_chunk(chunk):
     return chunk.apply(clean_review)
 
 print("Chargement des données...")
-df = pd.read_csv('./datasets/IMDB Dataset.csv')
+df = pd.read_csv('./data/IMDB Dataset.csv')
 print(f"Nombre total de critiques: {len(df)}")
 print(f"Distribution des sentiments:\n{df['sentiment'].value_counts()}")
 
@@ -76,7 +76,7 @@ plt.title('Matrice de confusion - Régression Logistique')
 plt.ylabel('Valeur réelle')
 plt.xlabel('Valeur prédite')
 plt.tight_layout()
-plt.savefig('classification_results/confusion_matrix_logistic.png')
+plt.savefig('src/classification_results/confusion_matrix_logistic.png')
 plt.close()
 
 print("\nEntraînement du modèle SVC...")
@@ -98,7 +98,7 @@ plt.title('Matrice de confusion - SVC')
 plt.ylabel('Valeur réelle')
 plt.xlabel('Valeur prédite')
 plt.tight_layout()
-plt.savefig('classification_results/confusion_matrix_svc.png')
+plt.savefig('src/classification_results/confusion_matrix_svc.png')
 plt.close()
 
 models = ['Logistic Regression', 'SVC']
@@ -110,7 +110,7 @@ plt.title('Comparaison des performances des modèles')
 plt.ylabel('Accuracy')
 plt.ylim(0.8, 1.0)  
 plt.tight_layout()
-plt.savefig('classification_results/model_comparison.png')
+plt.savefig('src/classification_results/model_comparison.png')
 plt.close()
 
 print("\nLes résultats et graphiques ont été sauvegardés dans le dossier 'classification_results'")

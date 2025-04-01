@@ -1,7 +1,7 @@
 import pandas as pd
 from ydata_profiling import ProfileReport
 
-df = pd.read_csv('./IMDB Dataset.csv/IMDB Dataset.csv')
+df = pd.read_csv('./data/IMDB Dataset.csv')
 
 profile = ProfileReport(
     df,
@@ -19,7 +19,7 @@ profile = ProfileReport(
     vars={"num": {"quantiles": [0.05, 0.25, 0.5, 0.75, 0.95]}}
 )
 
-profile.to_file("rapport_imdb.html")
+profile.to_file("src/rapport_imdb.html")
 
-print("Le rapport sauvegardé 'rapport_imdb.html'")
+print("Le rapport sauvegardé 'src/rapport_imdb.html'")
 

@@ -11,11 +11,11 @@ from wordcloud import WordCloud
 from multiprocessing import Pool, cpu_count
 import numpy as np
 
-if not os.path.exists('exploration_results'):
-    os.makedirs('exploration_results')
+if not os.path.exists('src/exploration_results'):
+    os.makedirs('src/exploration_results')
 
 print("Chargement des données...")
-df = pd.read_csv('./datasets/IMDB Dataset.csv') 
+df = pd.read_csv('./data/IMDB Dataset.csv') 
 
 print("Aperçu du dataset:")
 print(df.head())
@@ -32,7 +32,7 @@ print(sentiment_counts)
 plt.figure(figsize=(8, 6))
 sns.countplot(x='sentiment', data=df)
 plt.title('Distribution des sentiments')
-plt.savefig('exploration_results/sentiment_distribution.png')
+plt.savefig('src/exploration_results/sentiment_distribution.png')
 plt.close()
 
 def clean_review(review):
@@ -72,14 +72,14 @@ plt.figure(figsize=(10, 6))
 sns.histplot(df['review_length'], bins=50, kde=True)
 plt.title('Distribution des longueurs des critiques (caractères)')
 plt.xlabel('Longueur (caractères)')
-plt.savefig('exploration_results/review_length_distribution.png')
+plt.savefig('src/exploration_results/review_length_distribution.png')
 plt.close()
 
 plt.figure(figsize=(10, 6))
 sns.histplot(df['word_count'], bins=50, kde=True)
 plt.title('Distribution du nombre de mots par critique')
 plt.xlabel('Nombre de mots')
-plt.savefig('exploration_results/word_count_distribution.png')
+plt.savefig('src/exploration_results/word_count_distribution.png')
 plt.close()
 
 print("\nLongueur moyenne des critiques par sentiment (caractères):")
@@ -91,13 +91,13 @@ print(df.groupby('sentiment')['word_count'].mean())
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='sentiment', y='review_length', data=df)
 plt.title('Longueur des critiques par sentiment (caractères)')
-plt.savefig('exploration_results/review_length_by_sentiment.png')
+plt.savefig('src/exploration_results/review_length_by_sentiment.png')
 plt.close()
 
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='sentiment', y='word_count', data=df)
 plt.title('Nombre de mots par sentiment')
-plt.savefig('exploration_results/word_count_by_sentiment.png')
+plt.savefig('src/exploration_results/word_count_by_sentiment.png')
 plt.close()
 
 nltk.download('punkt')
@@ -120,7 +120,7 @@ plt.figure(figsize=(8, 6))
 sns.barplot(x=negation_means.index, y=negation_means.values)
 plt.title('Moyenne de mots de négation par sentiment')
 plt.ylabel('Nombre moyen de mots de négation')
-plt.savefig('exploration_results/negation_words_by_sentiment.png')
+plt.savefig('src/exploration_results/negation_words_by_sentiment.png')
 plt.close()
 
 def get_top_words(text_series, n=20):
@@ -146,7 +146,7 @@ sns.barplot(x=[word[0] for word in pos_top_words[:10]], y=[word[1] for word in p
 plt.title('Top 10 des mots dans les critiques positives')
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig('exploration_results/top_words_positive.png')
+plt.savefig('src/exploration_results/top_words_positive.png')
 plt.close()
 
 plt.figure(figsize=(12, 6))
@@ -154,7 +154,7 @@ sns.barplot(x=[word[0] for word in neg_top_words[:10]], y=[word[1] for word in n
 plt.title('Top 10 des mots dans les critiques négatives')
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.savefig('exploration_results/top_words_negative.png')
+plt.savefig('src/exploration_results/top_words_negative.png')
 plt.close()
 
 def create_wordcloud(text_series, title, filename):
