@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+from sklearn.model_selection import train_test_split
 from src.preprocessor import IMDBPreprocessor
 from src.model import SentimentModel
 from src.visualization import SentimentVisualizer
@@ -15,10 +16,22 @@ def main():
     
     print("\nPrétraitement des données...")
     preprocessor = IMDBPreprocessor()
-    X_train, X_test, y_train, y_test = preprocessor.fit_transform(df)
-    print("Prétraitement terminé.")
+    
+    df = preprocessor.preprocess(df)
+    print("Nettoyage des critiques terminé.")
     
     df = preprocessor.add_features(df)
+    
+    print("Vectorisation des critiques...")
+    X_vectorized = preprocessor.vectorize(df['review_cleaned'])
+    print(f"Dimensions des données vectorisées: {X_vectorized.shape}")
+    
+    print("\nSéparation des données en ensembles d'entraînement et de test...")
+    X_train, X_test, y_train, y_test = train_test_split(
+        X_vectorized, df['sentiment'], test_size=0.2, random_state=42
+    )
+    print(f"Taille de l'ensemble d'entraînement: {X_train.shape[0]}")
+    print(f"Taille de l'ensemble de test: {X_test.shape[0]}")
     
     print("\nCréation des visualisations...")
     visualizer = SentimentVisualizer()
