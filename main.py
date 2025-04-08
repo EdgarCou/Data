@@ -5,8 +5,8 @@ from src.model import SentimentModel
 from src.visualization import SentimentVisualizer
 
 def main():
-    if not os.path.exists('src/visualization_results'):
-        os.makedirs('src/visualization_results')
+    if not os.path.exists('src/classification_results'):
+        os.makedirs('src/classification_results')
     
     print("Chargement des données...")
     df = pd.read_csv('./data/IMDB Dataset.csv')
@@ -20,24 +20,23 @@ def main():
     
     df = preprocessor.add_features(df)
     
+    print("\nGénération des nuages de mots...")
+    preprocessor.generate_wordcloud(df, sentiment='positive')
+    preprocessor.generate_wordcloud(df, sentiment='negative')
+    
+    print("\nMots les plus fréquents dans les critiques positives:")
+    pos_top_words = preprocessor.get_top_words(df, sentiment='positive', n=10)
+    print(pos_top_words)
+    
+    print("\nMots les plus fréquents dans les critiques négatives:")
+    neg_top_words = preprocessor.get_top_words(df, sentiment='negative', n=10)
+    print(neg_top_words)
+    
     print("\nCréation des visualisations...")
     visualizer = SentimentVisualizer()
     visualizer.plot_sentiment_distribution(df)
     visualizer.plot_review_length_distribution(df)
     visualizer.plot_word_count_distribution(df)
-    
-    print("\nCréation des nuages de mots...")
-    visualizer.create_sentiment_wordclouds(df, column='review_cleaned')
-    
-    visualizer.create_colored_wordcloud(
-        df['review_cleaned'], 
-        'Nuage de mots coloré - Toutes les critiques', 
-        'wordcloud_colored',
-        colormap='viridis'
-    )
-    
-    visualizer.create_comparative_wordcloud(df, column='review_cleaned')
-    print("Nuages de mots créés avec succès.")
     
     print("\nEntraînement du modèle de régression logistique...")
     logistic_model = SentimentModel(model_type='logistic')
@@ -64,7 +63,7 @@ def main():
     accuracies = [logistic_results['accuracy'], svc_results['accuracy']]
     visualizer.plot_model_comparison(models, accuracies)
     
-    print("\nLes résultats et graphiques ont été sauvegardés dans les dossiers 'src/visualization_results'")
+    print("\nLes résultats et graphiques ont été sauvegardés dans les dossiers 'src/visualization_results' et 'src/classification_results'")
 
 if __name__ == "__main__":
     main()
