@@ -22,6 +22,23 @@ class IMDBPreprocessor:
         df_copy['review_cleaned'] = df_copy['review'].apply(self.clean_review)
         return df_copy
     
+    def fit(self, df):
+        df_processed = self.preprocess(df)
+        df_processed = self.add_features(df_processed)
+        self.vectorizer.fit(df_processed['review_cleaned'])
+        return self
+    
+    def transform(self, df):
+        df_processed = self.preprocess(df)
+        df_processed = self.add_features(df_processed)
+        X = self.vectorizer.transform(df_processed['review_cleaned'])
+        y = df_processed['sentiment'].values if 'sentiment' in df_processed.columns else None
+        return X, y
+    
+    def fit_transform(self, df):
+        self.fit(df)
+        return self.transform(df)
+    
     def vectorize(self, texts, fit=True):
         if fit:
             return self.vectorizer.fit_transform(texts)
